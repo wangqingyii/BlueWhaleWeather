@@ -1,4 +1,4 @@
-package com.wangqingyi.bluewhaleweather.netWork
+package com.wangqingyi.bluewhaleweather.logic.netWork
 
 import com.wangqingyi.bluewhaleweather.SunnyWeatherApplication
 import com.wangqingyi.bluewhaleweather.model.PlaceResponse

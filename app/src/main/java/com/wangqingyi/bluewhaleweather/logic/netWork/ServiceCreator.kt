@@ -1,8 +1,7 @@
-package com.wangqingyi.bluewhaleweather.netWork
+package com.wangqingyi.bluewhaleweather.logic.netWork
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 /**
  * @Author: WangQingYi
@@ -23,7 +22,7 @@ object ServiceCreator {
      * 获取service动态代理对象
      * @param serviceClass 接口Class对象
      */
-    fun <T> create(service: Class<T>): T = retrofit.create(service)
+    fun <T> create(serviceClass: Class<T>): T = retrofit.create(serviceClass)
 
     /**
      * 获取service动态代理对象

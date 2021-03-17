@@ -3,7 +3,7 @@ package com.wangqingyi.bluewhaleweather.ui.place
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.wangqingyi.bluewhaleweather.logic.Repository
+import com.wangqingyi.bluewhaleweather.logic.netWork.Repository
 import com.wangqingyi.bluewhaleweather.model.Place
 
 /**

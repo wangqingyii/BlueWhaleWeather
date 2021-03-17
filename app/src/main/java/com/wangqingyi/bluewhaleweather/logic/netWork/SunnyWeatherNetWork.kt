@@ -1,4 +1,4 @@
-package com.wangqingyi.bluewhaleweather.netWork
+package com.wangqingyi.bluewhaleweather.logic.netWork
 
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,6 +14,7 @@ import kotlin.coroutines.suspendCoroutine
  * @Remark:统一封装的网络数据源访问入口，用于对所有网络请求的API进行封装
  */
 object SunnyWeatherNetWork {
+
     //创建PlaceService动态代理对象
     private val placeService = ServiceCreator.create(PlaceService::class.java)
 

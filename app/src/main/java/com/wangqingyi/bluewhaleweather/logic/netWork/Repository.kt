@@ -1,8 +1,8 @@
-package com.wangqingyi.bluewhaleweather.logic
+package com.wangqingyi.bluewhaleweather.logic.netWork
 
 import androidx.lifecycle.liveData
 import com.wangqingyi.bluewhaleweather.model.Place
-import com.wangqingyi.bluewhaleweather.netWork.SunnyWeatherNetWork
+import com.wangqingyi.bluewhaleweather.logic.netWork.SunnyWeatherNetWork
 import kotlinx.coroutines.Dispatchers
 import java.lang.RuntimeException
 
@@ -25,6 +25,7 @@ object Repository {
         } catch (e: Exception) {
             Result.failure<List<Place>>(e)
         }
+        // 用于发射数据
         emit(result)
     }
 }

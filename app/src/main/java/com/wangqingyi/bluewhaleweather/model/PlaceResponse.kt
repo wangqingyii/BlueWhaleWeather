@@ -7,12 +7,15 @@ import com.google.gson.annotations.SerializedName
  * @Time:   2020/10/11
  * @Class:  PlaceResponse
  * @Remark: 定义数据模型
+ * [status] 状态
+ *
  */
 data class PlaceResponse(val status: String, val places: List<Place>)
 
 
 data class Place(
     val name: String, val location: Location,
+    // 注解用于重命名，让JSON字段和Kotlin中的字段之间建立映射关系
     @SerializedName("formatted_address") val address: String
 )
 
