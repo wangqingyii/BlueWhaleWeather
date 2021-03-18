@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.wangqingyi.bluewhaleweather.Adapter.PlaceAdapter
+import com.wangqingyi.bluewhaleweather.adapter.PlaceAdapter
 import com.wangqingyi.bluewhaleweather.R
-import kotlinx.android.synthetic.main.fragmeent_place.*
+import kotlinx.android.synthetic.main.fragment_place.*
 
 
 /**
@@ -22,7 +21,7 @@ import kotlinx.android.synthetic.main.fragmeent_place.*
  * @Remark: 搜索城市页面
  */
 class PlaceFragment : Fragment() {
-
+    // TODO 方法过时
     private val mViewModel by lazy { ViewModelProviders.of(this).get(PlaceViewModel::class.java) }
 
     private lateinit var mAdapter: PlaceAdapter
@@ -32,20 +31,24 @@ class PlaceFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragmeent_place, container, false)
+        return inflater.inflate(R.layout.fragment_place, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val layoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = layoutManager
-        mAdapter = PlaceAdapter(this,mViewModel.placeList)
+        mAdapter = PlaceAdapter(mViewModel.placeList)
         recyclerView.adapter = mAdapter
+        // 监听搜索框的内容变化
         searchPlaceEdit.addTextChangedListener { editable ->
+            // 输入框的内容
             val content = editable.toString()
+            // 判断是否为空 如果有内容变化就传递给searchPlaces()方法搜索城市数据
             if (content.isNotEmpty()) {
                 mViewModel.searchPlaces(content)
             } else {
+                // 为null时将Rv隐藏并显示图片
                 recyclerView.visibility = View.GONE
                 bgImageView.visibility = View.VISIBLE
                 mViewModel.placeList.clear()
@@ -53,7 +56,7 @@ class PlaceFragment : Fragment() {
             }
         }
 
-        mViewModel.placeLiveData.observe(this, Observer { result ->
+        mViewModel.placeLiveData.observe(this,  { result ->
             val places = result.getOrNull()
             if (places != null) {
                 recyclerView.visibility = View.VISIBLE
