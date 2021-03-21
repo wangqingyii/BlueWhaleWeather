@@ -8,10 +8,8 @@ import com.google.gson.annotations.SerializedName
  * @Class:  PlaceResponse
  * @Remark: 定义数据模型
  * [status] 状态
- *
  */
 data class PlaceResponse(val status: String, val places: List<Place>)
-
 
 data class Place(
     val name: String, val location: Location,
