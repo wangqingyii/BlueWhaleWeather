@@ -1,4 +1,4 @@
-package com.wangqingyi.bluewhaleweather.model
+package com.wangqingyi.bluewhaleweather.logic.model
 
 import com.google.gson.annotations.SerializedName
 

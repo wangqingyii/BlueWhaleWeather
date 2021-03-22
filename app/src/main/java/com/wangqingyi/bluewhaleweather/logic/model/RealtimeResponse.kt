@@ -1,9 +1,9 @@
-package com.wangqingyi.bluewhaleweather.logic.netWork
+package com.wangqingyi.bluewhaleweather.logic.model
 
 import com.google.gson.annotations.SerializedName
 
 /**
- *
+ * 实时天气
  *
  * @author WangQingYi
  * @since  2021/3/21
@@ -18,5 +18,6 @@ data class RealtimeResponse(val status: String, val result: Result) {
     )
 
     data class AirQuality(val qpi: AQI)
+
     data class AQI(val chn: Float)
 }

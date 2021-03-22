@@ -1,7 +1,7 @@
 package com.wangqingyi.bluewhaleweather.logic.netWork
 
 import com.wangqingyi.bluewhaleweather.SunnyWeatherApplication
-import com.wangqingyi.bluewhaleweather.model.PlaceResponse
+import com.wangqingyi.bluewhaleweather.logic.model.PlaceResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

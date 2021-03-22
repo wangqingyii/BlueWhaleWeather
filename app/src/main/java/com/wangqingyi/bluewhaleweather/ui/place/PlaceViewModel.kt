@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.wangqingyi.bluewhaleweather.logic.netWork.Repository
-import com.wangqingyi.bluewhaleweather.model.Place
+import com.wangqingyi.bluewhaleweather.logic.model.Place
 
 /**
  * 搜索城市页面 VM层

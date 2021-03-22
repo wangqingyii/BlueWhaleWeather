@@ -1,11 +1,14 @@
 package com.wangqingyi.bluewhaleweather.logic.netWork
 
+import androidx.lifecycle.liveData
+import kotlinx.coroutines.Dispatchers
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+import kotlin.math.ln
 
 /**
  * @Author: WangQingYi
@@ -38,5 +41,26 @@ object SunnyWeatherNetWork {
 
             })
         }
+    }
+
+    private val weatherService = ServiceCreator.create(WeatherService::class.java)
+
+    /**
+     * 获取每日天气
+     * [lng] 经度
+     * [lat] 纬度
+     */
+    suspend fun getDailyWeather(lng: String, lat: String) {
+        weatherService.getDailyWeather(lng, lat)
+    }
+
+
+    /**
+     * 获取实时天气
+     * [lng] 经度
+     * [lat] 纬度
+     */
+    suspend fun getRealtimeWeather(lng: String, lat: String) {
+        weatherService.getRealtimeWeather(lng, lat)
     }
 }
