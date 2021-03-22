@@ -1,4 +1,4 @@
-package com.wangqingyi.bluewhaleweather.ui
+package com.wangqingyi.bluewhaleweather.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

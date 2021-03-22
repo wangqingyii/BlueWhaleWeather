@@ -1,11 +1,11 @@
 package com.wangqingyi.bluewhaleweather.logic.netWork
 
 import androidx.lifecycle.liveData
-import com.wangqingyi.bluewhaleweather.logic.model.Place
+import com.wangqingyi.bluewhaleweather.logic.model.Weather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import java.lang.RuntimeException
+import kotlin.coroutines.CoroutineContext
 
 /**
  * @Author: WangQingYi
@@ -19,39 +19,62 @@ object Repository {
      * 搜索地点
      * [query] 查询的字段
      */
-    fun searchPlaces(query: String) = liveData(Dispatchers.IO) {
-        val result = try {
-            val placeResponse = SunnyWeatherNetWork.searchPlaces(query)
-            if (placeResponse.status == "ok") {
-                val places = placeResponse.places
-                Result.success(places)
+    fun searchPlaces(query: String) = fire(Dispatchers.IO) {
+        val placeResponse = SunnyWeatherNetWork.searchPlaces(query)
+        if (placeResponse.status == "ok") {
+            val places = placeResponse.places
+            Result.success(places)
+        } else {
+            Result.failure(RuntimeException("response status is${placeResponse.status}"))
+        }
+    }
+
+
+    /**
+     * 刷新天气
+     */
+     fun refreshWeather(lng: String, lat: String) = fire(Dispatchers.IO) {
+        // 两个并行请求
+        coroutineScope {
+            // 创建一个新的协程请求
+            val deferredRealtime = async {
+                SunnyWeatherNetWork.getRealtimeWeather(lng, lat)
+            }
+            // 创建一个新的协程请求
+            val deferredDailyResponse = async {
+                SunnyWeatherNetWork.getDailyWeather(lng, lat)
+            }
+            // 对两个请求获取结果
+            val realtimeResponse = deferredRealtime.await()
+            val dailyResponse = deferredDailyResponse.await()
+            // 对请求结果合并，并发射出去，如果有任何一个请求出问题就抛出异常给调用者
+            if (realtimeResponse.status == "ok" && dailyResponse.status == "ok") {
+                val weather =
+                    Weather(realtimeResponse.result.realtime, dailyResponse.result.daily)
+                Result.success(weather)
             } else {
-                Result.failure(RuntimeException("response status is${placeResponse.status}"))
+                Result.failure(
+                    RuntimeException(
+                        "实时天气状态为 ${realtimeResponse.status}" +
+                                "每日天气状态为 ${dailyResponse.status}"
+                    )
+                )
             }
-        } catch (e: Exception) {
-            Result.failure<List<Place>>(e)
         }
-        // 用于发射数据
-        emit(result)
     }
 
-
-    fun refreshWeather(lng: String, lat: String) = liveData(Dispatchers.IO) {
-        val result = try {
-            coroutineScope {
-                val deferredRealtime = async {
-                    SunnyWeatherNetWork.getRealtimeWeather(lng, lat)
-                }
-                val deferredDailyResponse = async {
-                    SunnyWeatherNetWork.getDailyWeather(lng, lat)
-                }
-                val realtimeResponse = deferredRealtime.await()
-                val dailyResponse = deferredDailyResponse.await()
+    /**
+     * 对入口函数进行封装
+     * [context] 上下文
+     * [block] 高阶函数
+     */
+    private fun <T> fire(context: CoroutineContext, block: suspend () -> Result<T>) =
+        liveData(context) {
+            val result = try {
+                block()
+            } catch (e: Exception) {
+                Result.failure(e)
             }
-        } catch (e: Exception) {
-
+            emit(result)
         }
-        emit(result)
-    }
-
 }
